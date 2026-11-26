@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataDoc Studio - Free Demo Edition</title>
+  <style>
+    :root {
+      --bg-dim: #0d1117;
+      --bg-panel: #161b22;
+      --bg-card: #21262d;
+      --bg-input: #0d1117;
+      --border-color: #30363d;
+      --border-focus: #58a6ff;
+      --text-main: #e2e8f0;
+      --text-heading: #f8fafc;
+      --text-muted: #94A3B8;
+      --accent: #238636;
+      --accent-hover: #2ea043;
+      --accent-blue: #1f6feb;
+      --accent-blue-hover: #388bfd;
+      --danger: #f85149;
+      --code-bg: #0a0c10;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dim);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* DEMO BANNER */
+    .demo-banner {
+      background-color: var(--accent-blue);
+      color: #ffffff;
+      padding: 8px 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .demo-banner a {
+      color: #ffffff;
+      text-decoration: underline;
+      margin-left: 8px;
+      font-weight: 700;
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: #58a6ff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.4px;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #94A3B8;
+      margin-left: 4px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border-color);
+    }
+
+    .badge-offline {
+      background-color: rgba(35, 134, 54, 0.16);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #4ade80;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-link {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .header-link:hover {
+      color: var(--text-heading);
+      background-color: rgba(148, 163, 184, 0.1);
+    }
+
+    /* MAIN CONTENT LAYOUT */
+    .app-container {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR / CONTROL PANEL */
+    .sidebar {
+      background-color: var(--bg-panel);
+      border-right: 1px solid var(--border-color);
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94A3B8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-control {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    input[type="text"], select, textarea {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      accent-color: var(--accent-blue);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    .paste-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .paste-textarea {
+      width: 100%;
+      min-height: 82px;
+      max-height: 180px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      border-radius: 4px;
+    }
+
+    .btn-icon:hover {
+      color: var(--danger);
+      background-color: rgba(248, 81, 73, 0.12);
+    }
+
+    /* WORKSPACE / WORKAREA */
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: var(--bg-dim);
+    }
+
+    .workspace-header {
+      background-color: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: #94A3B8;
+      padding: 6px 11px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-heading);
+      background-color: var(--bg-card);
+    }
+
+    .tab-btn.active {
+      color: var(--text-heading);
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .action-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      background-color: var(--bg-card);
+      border: 1px solid #3f4751;
+      color: var(--text-heading);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background-color: #2d333b;
+      border-color: #6e7681;
+      color: #ffffff;
+    }
+
+    .btn-copy {
+      background-color: #262c36;
+      border-color: #4b5563;
+      color: #f8fafc;
+    }
+
+    .btn-copy:hover {
+      background-color: #333b48;
+      border-color: #94A3B8;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* OUTPUT PANELS */
+    .view-container {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+      position: relative;
+    }
+
+    .code-output {
+      width: 100%;
+      height: 100%;
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #e6edf3;
+      white-space: pre;
+      overflow: auto;
+      resize: none;
+      outline: none;
+    }
+
+    /* TABLE PREVIEW */
+    .table-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background-color: var(--bg-panel);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    table.data-table th, table.data-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    table.data-table th {
+      background-color: #1f242c;
+      color: var(--text-heading);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    table.data-table tbody tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.025);
+    }
+
+    table.data-table tbody tr:hover {
+      background-color: rgba(88, 166, 255, 0.1);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #94A3B8;
+      text-align: center;
+      gap: 12px;
+      padding: 24px;
+    }
+
+    .empty-state-icon {
+      width: 48px;
+      height: 48px;
+      stroke: #94A3B8;
+      stroke-width: 1.25;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      background-color: var(--bg-panel);
+      border-top: 1px solid var(--border-color);
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #94A3B8;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stats-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* NOTIFICATION TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-focus);
+      color: var(--text-heading);
+      padding: 10px 16px;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      width: 90%;
+      max-width: 650px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    .modal-body h3 {
+      color: var(--text-heading);
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    .modal-body p, .modal-body li {
+      color: #cbd5e1;
+    }
+
+    .modal-body ul {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP DEMO BANNER -->
+  <div class="demo-banner">
+    Free Demo Edition (Preloaded Sample Only) &mdash; Unlock Full Features &amp; Custom Input in Pro Edition &rarr;
+    <a href="https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github" target="_blank">Unlock Full Offline Pro ($8 — One-Time)</a>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      <span class="brand-title">DataDoc Studio</span>
+      <span class="brand-subtitle">Demo Lite Edition</span>
+      <span class="badge-offline">
+        <span class="badge-dot"></span> 100% Local Sample
+      </span>
+    </div>
+
+    <div class="header-actions">
+      <a href="https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github" target="_blank" class="btn btn-primary" style="text-decoration: none; font-size: 12px; padding: 5px 12px;">
+        Unlock Full Offline Pro ($8 — One-Time)
+      </a>
+      <a href="#guide" class="header-link" id="btn-readme" role="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 1 3-3h7z"></path></svg>
+        Guide
+      </a>
+      <a href="#privacy" class="header-link" id="btn-legal" role="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Privacy
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="app-container">
+
+    <!-- SIDEBAR CONTROL PANEL -->
+    <aside class="sidebar">
+
+      <!-- PRELOADED TEXT INPUT -->
+      <div>
+        <div class="section-title">Raw Text Input (Demo Readonly)</div>
+        <div class="paste-box">
+          <label for="paste-input" style="font-size: 12px; color: #94A3B8; font-weight: 500;">Sample CSV / TSV Data:</label>
+          <textarea id="paste-input" class="paste-textarea" readonly placeholder="Preloaded dataset..."></textarea>
+          <button class="btn" id="btn-load-paste" style="width: 100%; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            Process Pasted Data
+          </button>
+        </div>
+      </div>
+
+      <!-- SANITIZER OPTIONS -->
+      <div>
+        <div class="section-title">Data Cleaning Engine</div>
+        <div class="control-group">
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="opt-trim" checked>
+            <span>Trim Leading/Trailing Whitespace</span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="opt-empty-rows" checked>
+            <span>Remove Completely Empty Rows</span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="opt-dedupe" checked>
+            <span>Remove Duplicate Rows</span>
+          </label>
+
+          <div class="form-control" style="margin-top: 6px;">
+            <label for="opt-case">Header Case Normalizer</label>
+            <select id="opt-case">
+              <option value="none">Keep Original Case</option>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label for="opt-null-replace">Replace Null / Empty Cells With</label>
+            <input type="text" id="opt-null-replace" readonly value="N/A">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FORMAT SETTINGS -->
+      <div>
+        <div class="section-title">Format Options</div>
+        <div class="control-group">
+
+          <div class="form-control">
+            <label for="opt-md-align">Markdown Alignment</label>
+            <select id="opt-md-align">
+              <option value="left">Left Aligned (| :--- |)</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DEMO DATA GENERATOR -->
+      <div style="margin-top: auto;">
+        <button class="btn" id="btn-load-demo" style="width: 100%; justify-content: center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          Load Sample Dataset
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- WORKSPACE / OUTPUT TABS -->
+    <main class="workspace">
+
+      <!-- WORKSPACE TOOLBAR -->
+      <div class="workspace-header">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            Table View
+          </button>
+          <button class="tab-btn" data-tab="markdown">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v5h5M16 13H8m8 4H8m2-8H8"></path></svg>
+            Markdown
+          </button>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-copy" id="btn-copy">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copy-label">Copy TSV (Excel)</span>
+          </button>
+          <button class="btn btn-primary" id="btn-download">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span id="download-label">Download .CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW CONTENT CONTAINERS -->
+      <div class="view-container">
+
+        <!-- EMPTY STATE INITIAL -->
+        <div class="empty-state" id="empty-state">
+          <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="1.5"></path>
+            <polyline points="13 2 13 9 20 9" stroke="currentColor" stroke-width="1.5"></polyline>
+          </svg>
+          <div>
+            <h3 style="color: var(--text-heading); font-size: 16px; margin-bottom: 4px;">No Dataset Loaded</h3>
+            <p style="color: #94A3B8;">Click "Load Sample Dataset" to test the data engine.</p>
+          </div>
+        </div>
+
+        <!-- TABLE PREVIEW TAB -->
+        <div class="table-wrapper" id="view-preview" style="display: none;">
+          <table class="data-table" id="data-table-element">
+            <thead id="table-head"></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- CODE GENERATOR TAB -->
+        <textarea class="code-output" id="view-code" style="display: none;" readonly></textarea>
+
+      </div>
+
+      <!-- FOOTER STATS -->
+      <div class="stats-bar">
+        <div class="stats-group">
+          <span>Active File: <strong id="stat-filename" style="color: var(--text-heading);">sample_users.csv</strong></span>
+          <span>Original Rows: <strong id="stat-orig-rows" style="color: var(--text-heading);">0</strong></span>
+          <span>Clean Rows: <strong id="stat-clean-rows" style="color: #4ade80;">0</strong></span>
+          <span>Columns: <strong id="stat-cols" style="color: var(--text-heading);">0</strong></span>
+        </div>
+        <div>
+          <span>Demo Lite Edition &bull; Local Sample Processing</span>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toast-message">Action completed successfully</span>
+  </div>
+
+  <!-- MODAL FOR GUIDE / PRIVACY -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title" style="color: var(--text-heading); font-size: 16px;">Documentation</h3>
+        <button class="btn-icon" id="modal-close" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    (function() {
+      let liteRunCount = 0;
+
+      // STATE MANAGEMENT
+      const state = {
+        name: 'sample_users.csv',
+        text: `user_id, Full Name , email address, Role , age, STATUS
+101, "Jane Doe ", jane.doe@example.com, Lead Architect , 34, ACTIVE
+102, John Smith, john.smith@company.org, Data Engineer, 29, Active 
+102, John Smith, john.smith@company.org, Data Engineer, 29, Active 
+103, "  Alex Rivera ", alex.r@tech.io, Technical Writer, , INACTIVE
+104, Sarah Connor, sarah@sky.net, Systems Analyst, 41, ACTIVE
+,,,,,
+105, Michael Scott, michael@dunder.com, Regional Manager, 45, N/A`,
+        headers: [],
+        rows: [],
+        rawOriginalRowCount: 0,
+        activeTab: 'preview'
+      };
+
+      const tabActionLabels = {
+        preview: { copy: 'Copy TSV (Excel)', download: 'Download .CSV' },
+        markdown: { copy: 'Copy Markdown', download: 'Download .MD' }
+      };
+
+      // DOM ELEMENTS
+      const pasteInput = document.getElementById('paste-input');
+      const btnLoadPaste = document.getElementById('btn-load-paste');
+      const optTrim = document.getElementById('opt-trim');
+      const optEmptyRows = document.getElementById('opt-empty-rows');
+      const optDedupe = document.getElementById('opt-dedupe');
+      const optCase = document.getElementById('opt-case');
+
+      const btnLoadDemo = document.getElementById('btn-load-demo');
+      const btnCopy = document.getElementById('btn-copy');
+      const btnDownload = document.getElementById('btn-download');
+      const copyLabel = document.getElementById('copy-label');
+      const downloadLabel = document.getElementById('download-label');
+      const btnReadme = document.getElementById('btn-readme');
+      const btnLegal = document.getElementById('btn-legal');
+
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const emptyState = document.getElementById('empty-state');
+      const viewPreview = document.getElementById('view-preview');
+      const viewCode = document.getElementById('view-code');
+      const tableHead = document.getElementById('table-head');
+      const tableBody = document.getElementById('table-body');
+
+      const statFilename = document.getElementById('stat-filename');
+      const statOrigRows = document.getElementById('stat-orig-rows');
+      const statCleanRows = document.getElementById('stat-clean-rows');
+      const statCols = document.getElementById('stat-cols');
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const modalClose = document.getElementById('modal-close');
+
+      // PRELOAD INITIAL TEXT
+      pasteInput.value = state.text;
+
+      // CORE PARSING ENGINE
+      function parseCSV(text) {
+        let lines = [];
+        let row = [];
+        let cell = '';
+        let inQuotes = false;
+
+        let delimiter = ',';
+        const firstLine = text.split(/\r?\n/)[0] || '';
+        if (firstLine.includes('\t')) delimiter = '\t';
+
+        for (let i = 0; i < text.length; i++) {
+          let char = text[i];
+          let nextChar = text[i + 1];
+
+          if (inQuotes) {
+            if (char === '"') {
+              if (nextChar === '"') {
+                cell += '"';
+                i++;
+              } else {
+                inQuotes = false;
+              }
+            } else {
+              cell += char;
+            }
+          } else {
+            if (char === '"') {
+              inQuotes = true;
+            } else if (char === delimiter) {
+              row.push(cell);
+              cell = '';
+            } else if (char === '\r') {
+              if (nextChar === '\n') {
+                row.push(cell);
+                lines.push(row);
+                row = [];
+                cell = '';
+                i++;
+              }
+            } else if (char === '\n') {
+              row.push(cell);
+              lines.push(row);
+              row = [];
+              cell = '';
+            } else {
+              cell += char;
+            }
+          }
+        }
+        if (cell !== '' || row.length > 0) {
+          row.push(cell);
+          lines.push(row);
+        }
+        return lines;
+      }
+
+      function processActiveData() {
+        let rawMatrix = parseCSV(state.text);
+        if (!rawMatrix || rawMatrix.length === 0) {
+          return;
+        }
+
+        let headers = rawMatrix[0] || [];
+        let dataRows = rawMatrix.slice(1);
+
+        const maxCols = Math.max(headers.length, ...dataRows.map(r => r.length));
+        while (headers.length < maxCols) headers.push(`column_${headers.length + 1}`);
+        dataRows = dataRows.map(r => {
+          const copy = r.slice();
+          while (copy.length < maxCols) copy.push('');
+          return copy;
+        });
+
+        state.rawOriginalRowCount = dataRows.length;
+
+        if (optTrim.checked) {
+          headers = headers.map(h => h.trim());
+          dataRows = dataRows.map(row => row.map(cell => cell.trim()));
+        }
+
+        if (optEmptyRows.checked) {
+          dataRows = dataRows.filter(row => row.some(cell => cell.trim() !== ''));
+        }
+
+        if (optDedupe.checked) {
+          const seen = new Set();
+          dataRows = dataRows.filter(row => {
+            const key = JSON.stringify(row);
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        }
+
+        state.headers = headers;
+        state.rows = dataRows;
+
+        emptyState.style.display = 'none';
+        statFilename.textContent = state.name;
+        statOrigRows.textContent = state.rawOriginalRowCount;
+        statCleanRows.textContent = state.rows.length;
+        statCols.textContent = state.headers.length;
+
+        renderOutput();
+      }
+
+      function renderOutput() {
+        if (state.headers.length === 0) return;
+
+        if (state.activeTab === 'preview') {
+          renderTablePreview();
+        } else {
+          viewPreview.style.display = 'none';
+          viewCode.style.display = 'block';
+
+          if (state.activeTab === 'markdown') {
+            viewCode.value = generateMarkdown();
+          }
+        }
+      }
+
+      function renderTablePreview() {
+        viewCode.style.display = 'none';
+        viewPreview.style.display = 'block';
+
+        tableHead.innerHTML = `<tr>${state.headers.map(h => `<th>${escapeHTML(h)}</th>`).join('')}</tr>`;
+        tableBody.innerHTML = state.rows.map(row =>
+          `<tr>${row.map(cell => `<td>${escapeHTML(cell)}</td>`).join('')}</tr>`
+        ).join('');
+      }
+
+      function escapeHTML(str) {
+        return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function generateMarkdown() {
+        if (state.headers.length === 0) return '';
+
+        const colWidths = state.headers.map((h, i) => {
+          let max = h.length;
+          state.rows.forEach(r => {
+            const len = (r[i] || '').length;
+            if (len > max) max = len;
+          });
+          return Math.max(max, 4);
+        });
+
+        const pad = (str, len) => (str || '').padEnd(len, ' ');
+        const headerLine = '| ' + state.headers.map((h, i) => pad(h, colWidths[i])).join(' | ') + ' |';
+        const sepLine = '| ' + colWidths.map(w => ':---' + '-'.repeat(Math.max(0, w - 4))).join(' | ') + ' |';
+        const rowLines = state.rows.map(r =>
+          '| ' + state.headers.map((_, i) => pad(r[i] || '', colWidths[i])).join(' | ') + ' |'
+        );
+
+        return [headerLine, sepLine, ...rowLines].join('\n');
+      }
+
+      function updateActionButtons() {
+        const labels = tabActionLabels[state.activeTab] || tabActionLabels.preview;
+        copyLabel.textContent = labels.copy;
+        downloadLabel.textContent = labels.download;
+      }
+
+      // BUTTON AND TAB EVENT LISTENERS
+      btnLoadPaste.addEventListener('click', () => {
+        processActiveData();
+        showToast('Sample data processed!');
+      });
+
+      btnLoadDemo.addEventListener('click', () => {
+        processActiveData();
+        showToast('Sample dataset loaded!');
+      });
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.activeTab = btn.getAttribute('data-tab');
+          updateActionButtons();
+          renderOutput();
+        });
+      });
+
+      [optTrim, optEmptyRows, optDedupe, optCase].forEach(elem => {
+        elem.addEventListener('change', () => processActiveData());
+      });
+
+      // COPY & DOWNLOAD LIMIT CHECKER (DEMO CONTROL)
+      btnCopy.addEventListener('click', () => {
+        liteRunCount++;
+        if (liteRunCount > 2) {
+          showToast('Demo limit reached! Unlock Full Offline Pro for unlimited exports.');
+          setTimeout(() => {
+            window.open('https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github', '_blank');
+          }, 1000);
+          return;
+        }
+        showToast('Pro feature: Offline copy unlocked in Full Pro Edition!');
+      });
+
+      btnDownload.addEventListener('click', () => {
+        liteRunCount++;
+        if (liteRunCount > 2) {
+          showToast('Demo limit reached! Unlock Full Offline Pro for unlimited downloads.');
+          setTimeout(() => {
+            window.open('https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github', '_blank');
+          }, 1000);
+          return;
+        }
+        showToast('Pro feature: File download unlocked in Full Pro Edition!');
+      });
+
+      // TOAST NOTIFIER
+      function showToast(msg) {
+        toastMsg.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      // MODAL CONTENT
+      btnReadme.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalTitle.textContent = "DataDoc Studio - Free Demo Guide";
+        modalBody.innerHTML = `
+          <h3>Free Demo Overview</h3>
+          <p>This is a preloaded <strong>Demo Edition</strong> of DataDoc Studio. You can test basic data cleaning (Trim, Remove empty rows, Deduplicate) and preview clean Markdown table output.</p>
+
+          <h3>Unlock Full Offline Pro ($8 — One-Time)</h3>
+          <ul>
+            <li><strong>Batch Drag & Drop:</strong> Drag multiple .CSV, .TSV and .JSON files without row limits.</li>
+            <li><strong>All Export Formats:</strong> SQL Insert, HTML5 Table, Clean JSON, Clean CSV, and Print/PDF.</li>
+            <li><strong>Advanced Normalizers:</strong> snake_case, camelCase, Title Case header formatting and custom null replacements.</li>
+            <li><strong>100% Offline Single File:</strong> Run everywhere locally in browser without internet.</li>
+          </ul>
+          <p style="margin-top: 12px;"><a href="https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github" target="_blank" style="color: #60a5fa; font-weight: 700;">Get DataDoc Studio Pro ($8) &rarr;</a></p>
+        `;
+        modalOverlay.classList.add('active');
+      });
+
+      btnLegal.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalTitle.textContent = "Privacy & Legal Notice";
+        modalBody.innerHTML = `
+          <h3>100% Local Processing</h3>
+          <p>DataDoc Studio runs strictly inside your device's browser memory. No dataset, file, or metric is ever transmitted to any external server.</p>
+
+          <h3>Warranty Disclaimer</h3>
+          <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.</p>
+        `;
+        modalOverlay.classList.add('active');
+      });
+
+      modalClose.addEventListener('click', () => modalOverlay.classList.remove('active'));
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+      });
+
+      updateActionButtons();
+      processActiveData();
+    })();
+  </script>
+
+<style id="lite-anticopy-shield-css">
+  html, body, body * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+  body * { pointer-events: none !important; }
+  button, a, select, summary, input[type="radio"], input[type="checkbox"], [role="tab"], [data-lite-allow], #lite-copy-toast, #lite-copy-toast * { pointer-events: auto !important; }
+  #lite-copy-toast { position: fixed; bottom: 22px; right: 22px; z-index: 999999; background: #0f172a; color: #f8fafc; border: 1px solid #38bdf8; border-radius: 10px; padding: 12px 18px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; align-items: center; gap: 12px; }
+  #lite-copy-toast a { color: #38bdf8; font-weight: 700; text-decoration: underline; }
+</style>
+<div id="lite-copy-toast">
+  <span>Selection, right-click &amp; copying are disabled in the Free Demo.</span>
+  <a href="https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github" target="_blank" rel="noopener">Get Full Pro Edition &rarr;</a>
+</div>
+<script id="lite-anticopy-shield">
+(function() {
+  var toastTimer = null;
+  function mostrarAviso() {
+    var t = document.getElementById("lite-copy-toast");
+    if (!t) return;
+    t.style.display = "flex";
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.style.display = "none"; }, 3600);
+  }
+  document.addEventListener("contextmenu", function(e) { e.preventDefault(); mostrarAviso(); }, true);
+  document.addEventListener("selectstart", function(e) { e.preventDefault(); }, true);
+  document.addEventListener("copy", function(e) { e.preventDefault(); if (e.clipboardData) e.clipboardData.setData("text/plain", "Full Pro Edition: https://bobservice.gumroad.com/l/datadoc-studio?utm_source=github"); mostrarAviso(); }, true);
+  document.addEventListener("cut", function(e) { e.preventDefault(); mostrarAviso(); }, true);
+  document.addEventListener("keydown", function(e) {
+    var ctrl = e.ctrlKey || e.metaKey, key = (e.key || "").toLowerCase();
+    if (e.key === "F12" || (ctrl && (key === "u" || key === "s" || key === "c" || key === "a" || key === "x")) || (ctrl && e.shiftKey && (key === "i" || key === "j" || key === "c"))) { e.preventDefault(); mostrarAviso(); }
+  }, true);
+  var TIPOS = ["", "text", "number", "search", "email", "url", "tel", "password", "date"];
+  function esTexto(el) { return el && (el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && TIPOS.indexOf((el.getAttribute("type") || "").toLowerCase()) !== -1)); }
+  function bloquear() {
+    var cs = document.querySelectorAll("textarea, input");
+    for (var i = 0; i < cs.length; i++) if (esTexto(cs[i])) { cs[i].readOnly = true; cs[i].setAttribute("readonly", "readonly"); }
+  }
+  bloquear();
+  if (window.MutationObserver) new MutationObserver(bloquear).observe(document.documentElement, { childList: true, subtree: true });
+  ["paste", "drop", "dragover", "dragenter", "beforeinput"].forEach(function(n) { document.addEventListener(n, function(e) { e.preventDefault(); if (n === "paste") mostrarAviso(); }, true); });
+  document.addEventListener("keydown", function(e) { if (esTexto(e.target) && e.key !== "Tab") e.preventDefault(); }, true);
+  try { document.execCommand = function() { return false; }; } catch (err) {}
+  try { if (navigator.clipboard) navigator.clipboard.writeText = function() { return Promise.reject(new Error("disabled")); }; } catch (err) {}
+})();
+</script>
+
+</body>
+</html>
